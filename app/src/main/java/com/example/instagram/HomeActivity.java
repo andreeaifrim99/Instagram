@@ -2,10 +2,14 @@ package com.example.instagram;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.instagram.model.Post;
 import com.parse.FindCallback;
@@ -17,6 +21,7 @@ import java.util.List;
 public class HomeActivity extends AppCompatActivity {
     private Button logOutButton;
     private Button newPostButton;
+    private BottomNavigationView bottomView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +30,7 @@ public class HomeActivity extends AppCompatActivity {
 
         logOutButton = findViewById(R.id.btnLogOut);
         newPostButton = findViewById(R.id.btnCreate);
+        bottomView = findViewById(R.id.bottom_navigation);
 
         logOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,7 +54,26 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        //loadTopPosts();
+        bottomView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_home:
+                        Toast.makeText(HomeActivity.this, "Home!", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.action_compose:
+                        Toast.makeText(HomeActivity.this, "Compose!", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.action_profile:
+                    default:
+                        Toast.makeText(HomeActivity.this, "Profile!", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+                return true;
+            }
+        });
+
+        loadTopPosts();
     }
 
 
