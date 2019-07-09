@@ -16,6 +16,7 @@ import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
     private Button logOutButton;
+    private Button newPostButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +24,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         logOutButton = findViewById(R.id.btnLogOut);
+        newPostButton = findViewById(R.id.btnCreate);
 
         logOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,7 +38,21 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        newPostButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //if clicked a new activity should be opened where the user can create a new post
+                final Intent intent = new Intent(HomeActivity.this, CreatePostActivity.class);
+                startActivity(intent);
+                //finish();
+            }
+        });
 
+        //loadTopPosts();
+    }
+
+
+    private void loadTopPosts() {
         final Post.Query postsQuery = new Post.Query();
         postsQuery.getTop().withUser();
         postsQuery.findInBackground(new FindCallback<Post>() {
