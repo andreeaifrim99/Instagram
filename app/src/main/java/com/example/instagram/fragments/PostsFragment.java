@@ -48,7 +48,8 @@ public class PostsFragment extends Fragment {
         //set layout manager on recycler view
         rvPosts.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        loadTopPosts();
+        //loadTopPosts();
+        queryPosts();
     }
 
     //USED ANOTHER METHOD, THIS ONE MIGHT BE WRONG
