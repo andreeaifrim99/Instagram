@@ -54,6 +54,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+
         final FragmentManager fragmentManager = getSupportFragmentManager();
 
         //logOutButton = findViewById(R.id.btnLogOut);
@@ -99,6 +100,7 @@ public class HomeActivity extends AppCompatActivity {
         bottomView.setSelectedItemId(R.id.action_home);
         //loadTopPosts();
     }
+
 
 
     private void loadTopPosts() {
