@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.instagram.fragments.ComposeFragment;
 import com.example.instagram.fragments.PostsFragment;
+import com.example.instagram.fragments.ProfileFragment;
 import com.example.instagram.model.Post;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -35,7 +36,7 @@ public class HomeActivity extends AppCompatActivity {
         final FragmentManager fragmentManager = getSupportFragmentManager();
 
         logOutButton = findViewById(R.id.btnLogOut);
-        newPostButton = findViewById(R.id.btnCreate);
+        //newPostButton = findViewById(R.id.btnCreate);
         bottomView = findViewById(R.id.bottom_navigation);
 
         logOutButton.setOnClickListener(new View.OnClickListener() {
@@ -47,16 +48,6 @@ public class HomeActivity extends AppCompatActivity {
                 final Intent intent = new Intent(HomeActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
-            }
-        });
-
-        newPostButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //if clicked a new activity should be opened where the user can create a new post
-                final Intent intent = new Intent(HomeActivity.this, CreatePostActivity.class);
-                startActivity(intent);
-                //finish();
             }
         });
 
@@ -75,7 +66,7 @@ public class HomeActivity extends AppCompatActivity {
                         break;
                     case R.id.action_profile:
                     default:
-                        fragment = new ComposeFragment();
+                        fragment = new ProfileFragment();
                         Toast.makeText(HomeActivity.this, "Profile!", Toast.LENGTH_SHORT).show();
                         break;
                 }
@@ -85,7 +76,7 @@ public class HomeActivity extends AppCompatActivity {
         });
         // Set default selection
         bottomView.setSelectedItemId(R.id.action_home);
-        loadTopPosts();
+        //loadTopPosts();
     }
 
 

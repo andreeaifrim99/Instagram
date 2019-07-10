@@ -38,6 +38,12 @@ public class MainActivity extends AppCompatActivity {
             final Intent intent = new Intent(MainActivity.this, HomeActivity.class);
             startActivity(intent);
             finish();
+
+            /*Fragment fragment = new PostsFragment();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(MainActivity.this, fragment);
+            transaction.commit();*/
+
         } else {
             // show the signup or login screen
             loginBtn.setOnClickListener(new View.OnClickListener() {
