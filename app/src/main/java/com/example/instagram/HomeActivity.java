@@ -10,9 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
 
 import com.example.instagram.fragments.ComposeFragment;
 import com.example.instagram.fragments.PostsFragment;
@@ -25,8 +22,8 @@ import com.parse.ParseUser;
 import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
-    private Button logOutButton;
-    private Button newPostButton;
+    //private Button logOutButton;
+    //private Button newPostButton;
     private BottomNavigationView bottomView;
 
     // create an action bar button
@@ -59,11 +56,11 @@ public class HomeActivity extends AppCompatActivity {
 
         final FragmentManager fragmentManager = getSupportFragmentManager();
 
-        logOutButton = findViewById(R.id.btnLogOut);
+        //logOutButton = findViewById(R.id.btnLogOut);
         //newPostButton = findViewById(R.id.btnCreate);
         bottomView = findViewById(R.id.bottom_navigation);
 
-        logOutButton.setOnClickListener(new View.OnClickListener() {
+       /* logOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //if clicked, the user should no longer be remembered
@@ -73,7 +70,7 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
-        });
+        });*/
 
         bottomView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -82,16 +79,16 @@ public class HomeActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.action_home:
                         fragment = new PostsFragment();
-                        Toast.makeText(HomeActivity.this, "Home!", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(HomeActivity.this, "Home!", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.action_compose:
                         fragment = new ComposeFragment();
-                        Toast.makeText(HomeActivity.this, "Compose!", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(HomeActivity.this, "Compose!", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.action_profile:
                     default:
                         fragment = new ProfileFragment();
-                        Toast.makeText(HomeActivity.this, "Profile!", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(HomeActivity.this, "Profile!", Toast.LENGTH_SHORT).show();
                         break;
                 }
                 fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
