@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.instagram.EndlessRecyclerViewScrollListener;
 import com.example.instagram.PostsAdapter;
 import com.example.instagram.R;
 import com.example.instagram.model.Post;
@@ -27,6 +28,8 @@ public class PostsFragment extends Fragment {
     protected PostsAdapter adapter;
     protected List<Post> mPosts;
     private SwipeRefreshLayout swipeContainer;
+    private EndlessRecyclerViewScrollListener scrollListener;
+    int page = 0;
 
     //onCreate view to inflate the view
 
@@ -48,7 +51,22 @@ public class PostsFragment extends Fragment {
         //set adapter on recycler view
         rvPosts.setAdapter(adapter);
         //set layout manager on recycler view
-        rvPosts.setLayoutManager(new LinearLayoutManager(getContext()));
+        LinearLayoutManager managerLin = new LinearLayoutManager(getContext());
+        rvPosts.setLayoutManager(managerLin);
+
+        //used for endless scrolling
+        scrollListener = new EndlessRecyclerViewScrollListener(managerLin) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                // Triggered only when new data needs to be appended to the list
+                // Add whatever code is needed to append new items to the bottom of the list
+                //loadNextDataFromApi(page);
+                queryPosts(page);
+            }
+        };
+        // Adds the scroll listener to RecyclerView
+        rvPosts.addOnScrollListener(scrollListener);
+        //end endless scrolling
 
         swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
         // Setup refresh listener which triggers new data loading
@@ -60,7 +78,7 @@ public class PostsFragment extends Fragment {
                 // once the network request has completed successfully.
                 //fetchTimelineAsync(0);
                 adapter.clear();
-                queryPosts();
+                queryPosts(page);
                 swipeContainer.setRefreshing(false);
             }
         });
@@ -71,7 +89,7 @@ public class PostsFragment extends Fragment {
                 android.R.color.holo_red_light);
 
         //loadTopPosts();
-        queryPosts();
+        queryPosts(page);
     }
 
 
@@ -95,10 +113,13 @@ public class PostsFragment extends Fragment {
         });
     }
 
-    protected void queryPosts() {
+    protected void queryPosts(int page) {
         ParseQuery<Post> postQuery = new ParseQuery<Post>(Post.class);
         postQuery.include(Post.KEY_USER);
+        //only want to include posts that are after the date of the last post
+        //postQuery.
         postQuery.setLimit(20);
+        postQuery.setSkip(20*page);
         postQuery.addDescendingOrder(Post.KEY_CREATED_AT);
         postQuery.findInBackground(new FindCallback<Post>() {
             @Override

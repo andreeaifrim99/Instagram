@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.instagram.R;
@@ -41,6 +42,8 @@ public class ComposeFragment extends Fragment {
     private Button takePicBtn;
     private ImageView ivPostImage;
     private File photoFile;
+    View view;
+    private ProgressBar pb;
 
 
     @Nullable
@@ -51,11 +54,17 @@ public class ComposeFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        pb = (ProgressBar) view.findViewById(R.id.pbLoading);
+        //set a progress bar while the post is uploading
+        pb.setVisibility(ProgressBar.VISIBLE);
+
+
         super.onViewCreated(view, savedInstanceState);
         etDescription = view.findViewById(R.id.etDesc);
         postBtn = view.findViewById(R.id.btnPost);
         takePicBtn = view.findViewById(R.id.takePicBtn);
         ivPostImage = view.findViewById(R.id.ivPostImage);
+
 
         takePicBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,6 +157,7 @@ public class ComposeFragment extends Fragment {
                     Log.d("CreatePostActivity", "Create post success");
                     etDescription.setText("");
                     ivPostImage.setImageResource(0);
+                    //pb.setVisibility(ProgressBar.INVISIBLE);
                 } else {
                     Log.d("CreatePostActivity", "Failed to post");
                     e.printStackTrace();
