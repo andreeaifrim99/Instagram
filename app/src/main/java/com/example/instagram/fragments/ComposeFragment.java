@@ -43,8 +43,6 @@ public class ComposeFragment extends Fragment {
     private ImageView ivPostImage;
     private File photoFile;
     private ProgressBar pb;
-    View view;
-
 
     @Nullable
     @Override
@@ -60,6 +58,7 @@ public class ComposeFragment extends Fragment {
         postBtn = view.findViewById(R.id.btnPost);
         takePicBtn = view.findViewById(R.id.takePicBtn);
         ivPostImage = view.findViewById(R.id.ivPostImage);
+
         pb = (ProgressBar) view.findViewById(R.id.pbLoading);
         //set a progress bar while the post is uploading
 

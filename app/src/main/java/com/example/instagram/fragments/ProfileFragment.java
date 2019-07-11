@@ -12,10 +12,12 @@ import java.util.List;
 
 public class ProfileFragment extends PostsFragment {
 
-    protected void queryPosts() {
+    @Override
+    protected void queryPosts(int page) {
         ParseQuery<Post> postQuery = new ParseQuery<Post>(Post.class);
         postQuery.include(Post.KEY_USER);
         postQuery.setLimit(20);
+        postQuery.setSkip(20*page);
         postQuery.whereEqualTo(Post.KEY_USER, ParseUser.getCurrentUser());
         postQuery.addDescendingOrder(Post.KEY_CREATED_AT);
         postQuery.findInBackground(new FindCallback<Post>() {
