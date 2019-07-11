@@ -3,11 +3,14 @@ package com.example.instagram;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,10 +27,12 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
     private Context context;
     private List<Post> posts;
+    public int whichFragment;
 
-    public PostsAdapter(Context context, List<Post> posts) {
+    public PostsAdapter(Context context, List<Post> posts, int whichFragment) {
         this.context = context;
         this.posts = posts;
+        this.whichFragment = whichFragment;
     }
 
     @NonNull
@@ -41,6 +46,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         Post post = posts.get(i);
         viewHolder.bind(post);
+
+        //if (whichfragment == 0) -> set it for gridlayout and opposite if it's 1
     }
 
     @Override
@@ -54,6 +61,13 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         ImageView ivImage;
         TextView tvDescription;
         TextView tvCreated;
+        TextView tvNumLikes;
+        TextView tvNumComments;
+        ImageView ivProfile;
+        ImageButton btnHeart;
+        ImageButton btnComment;
+        ImageButton btnShare;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -62,19 +76,70 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             ivImage = itemView.findViewById(R.id.ivImage);
             tvDescription = itemView.findViewById(R.id.tvDescription);
             tvCreated = itemView.findViewById(R.id.tvCreated);
+            tvNumLikes = itemView.findViewById(R.id.tvNumLikes);
+            tvNumComments = itemView.findViewById(R.id.tvNumComments);
+            ivProfile = itemView.findViewById(R.id.ivProfile);
+            btnHeart = itemView.findViewById(R.id.btnHeart);
+            btnComment = itemView.findViewById(R.id.btnMessage);
+            btnShare = itemView.findViewById(R.id.btnDirect);
 
             itemView.setOnClickListener(this);
         }
 
-        public void bind(Post post) {
-            tvHandle.setText(post.getUser().getUsername());
-            String date = getRelativeTimeAgo(String.valueOf(post.getCreatedAt()));
-            tvCreated.setText(date);
-            ParseFile image = post.getImage();
-            if (image != null) {
-                Glide.with(context).load(image.getUrl()).into(ivImage);
+        public void bind(final Post post) {
+            if (whichFragment == 0) {
+                btnHeart.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (!post.isLiked()) {
+                            //want it to be liked
+                            post.like();
+                            btnHeart.setImageResource(R.drawable.ic_heart2);
+
+                        } else {
+                            //unlike post
+                            post.unlike();
+                            btnHeart.setImageResource(R.drawable.ic_heart);
+
+
+                        }
+                        post.saveInBackground();
+                        tvNumLikes.setText(Integer.toString(post.getNumLikes()));
+                    }
+                });
+
+                tvNumLikes.setText(Integer.toString(post.getNumLikes()));
+                tvHandle.setText(post.getUser().getUsername());
+                String date = getRelativeTimeAgo(String.valueOf(post.getCreatedAt()));
+                tvCreated.setText(date);
+                ParseFile image = post.getImage();
+                if (image != null) {
+                    Glide.with(context).load(image.getUrl()).into(ivImage);
+                }
+                tvDescription.setText(post.getDescription());
+                //else if it's the profile view
+            } else if (whichFragment == 1) {
+                tvHandle.setVisibility(View.GONE);
+                tvCreated.setVisibility(View.GONE);
+                tvDescription.setVisibility(View.GONE);
+                tvNumComments.setVisibility(View.GONE);
+                tvNumLikes.setVisibility(View.GONE);
+                ivProfile.setVisibility(View.GONE);
+                btnHeart.setVisibility(View.GONE);
+                btnComment.setVisibility(View.GONE);
+                btnShare.setVisibility(View.GONE);
+                //have to set other stuff to gone!
+                //to resize the smaller images
+                DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+                int pxWidth = displayMetrics.widthPixels;
+
+                ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(pxWidth/3, pxWidth/3);
+                ivImage.setLayoutParams(layoutParams);
+                ParseFile image = post.getImage();
+                if (image != null) {
+                    Glide.with(context).load(image.getUrl()).into(ivImage);
+                }
             }
-            tvDescription.setText(post.getDescription());
 
         }
 

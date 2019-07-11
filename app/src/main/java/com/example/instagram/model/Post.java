@@ -6,6 +6,10 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import org.json.JSONArray;
+
+import java.util.ArrayList;
+
 @ParseClassName("Post")
 public class Post extends ParseObject {
     private static final String KEY_DESCRIPTION = "description";
@@ -13,6 +17,7 @@ public class Post extends ParseObject {
     public static final String KEY_USER = "user";
     public static final String KEY_CREATED_AT = "createdAt";
     private static final String KEY_ID = "objectId";
+    public static final String KEY_LIKED_BY = "likedBy";
 
     public String getObjectID() {
         return getString(KEY_ID);
@@ -39,6 +44,31 @@ public class Post extends ParseObject {
 
     public void setUser(ParseUser user) {
         put(KEY_USER, user);
+    }
+
+    public JSONArray getLikedBy() {
+        return getJSONArray(KEY_LIKED_BY);
+    }
+
+    public boolean isLiked() {
+    }
+
+    public void like() {
+        ParseUser u = ParseUser.getCurrentUser();
+        add(KEY_LIKED_BY, u);
+
+        //get array of users
+    }
+
+    public void unlike() {
+        //takes the user out of array of likes
+        ParseUser u = ParseUser.getCurrentUser();
+        ArrayList<ParseUser> users = new ArrayList<>();
+        users.add(u);
+        removeAll(KEY_LIKED_BY, users);
+    }
+
+    public int getNumLikes() {
     }
 
     public static class Query extends ParseQuery<Post> {

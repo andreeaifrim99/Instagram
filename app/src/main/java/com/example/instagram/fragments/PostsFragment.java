@@ -24,12 +24,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PostsFragment extends Fragment {
-    private RecyclerView rvPosts;
+    protected RecyclerView rvPosts;
     protected PostsAdapter adapter;
     protected List<Post> mPosts;
     private SwipeRefreshLayout swipeContainer;
     private EndlessRecyclerViewScrollListener scrollListener;
     int page = 0;
+    LinearLayoutManager managerLin;
+    public int whichFragment;
 
     //onCreate view to inflate the view
 
@@ -47,12 +49,10 @@ public class PostsFragment extends Fragment {
         //create data source
         mPosts = new ArrayList<>();
         //create adapter
-        adapter = new PostsAdapter(getContext(), mPosts);
-        //set adapter on recycler view
-        rvPosts.setAdapter(adapter);
+
         //set layout manager on recycler view
-        LinearLayoutManager managerLin = new LinearLayoutManager(getContext());
-        rvPosts.setLayoutManager(managerLin);
+        managerLin = new LinearLayoutManager(getContext());
+
 
         //used for endless scrolling
         scrollListener = new EndlessRecyclerViewScrollListener(managerLin) {
@@ -64,6 +64,8 @@ public class PostsFragment extends Fragment {
                 queryPosts(page);
             }
         };
+
+        setRecyclerView();
         // Adds the scroll listener to RecyclerView
         rvPosts.addOnScrollListener(scrollListener);
         //end endless scrolling
@@ -90,6 +92,15 @@ public class PostsFragment extends Fragment {
 
         //loadTopPosts();
         queryPosts(page);
+    }
+
+    protected void setRecyclerView() {
+        whichFragment = 0;
+        //set adapter on recycler view
+        adapter = new PostsAdapter(getContext(), mPosts, whichFragment);
+        rvPosts.setAdapter(adapter);
+        managerLin = new LinearLayoutManager(getContext());
+        rvPosts.setLayoutManager(managerLin);
     }
 
 
