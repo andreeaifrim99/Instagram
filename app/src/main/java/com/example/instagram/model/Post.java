@@ -7,6 +7,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 
@@ -47,10 +48,30 @@ public class Post extends ParseObject {
     }
 
     public JSONArray getLikedBy() {
-        return getJSONArray(KEY_LIKED_BY);
+        JSONArray a = getJSONArray(KEY_LIKED_BY);
+
+        if (a == null) {
+            return new JSONArray();
+        } else {
+            return getJSONArray(KEY_LIKED_BY);
+        }
     }
 
     public boolean isLiked() {
+        JSONArray a = getLikedBy();
+
+        for (int i = 0; i < a.length(); i++) {
+            try {
+                a.get(i);
+
+                if (a.getJSONObject(i).getString("objectId").equals(ParseUser.getCurrentUser().getObjectId())) {
+                    return true;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
     }
 
     public void like() {
@@ -69,6 +90,8 @@ public class Post extends ParseObject {
     }
 
     public int getNumLikes() {
+        //number of users in array
+        return getLikedBy().length();
     }
 
     public static class Query extends ParseQuery<Post> {

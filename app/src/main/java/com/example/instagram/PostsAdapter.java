@@ -2,6 +2,7 @@ package com.example.instagram;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
@@ -95,13 +96,13 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                             //want it to be liked
                             post.like();
                             btnHeart.setImageResource(R.drawable.ic_heart2);
+                            btnHeart.setColorFilter(Color.argb(255,255,0,0));
 
                         } else {
                             //unlike post
                             post.unlike();
                             btnHeart.setImageResource(R.drawable.ic_heart);
-
-
+                            btnHeart.setColorFilter(Color.argb(255,0,0,0));
                         }
                         post.saveInBackground();
                         tvNumLikes.setText(Integer.toString(post.getNumLikes()));
@@ -109,6 +110,13 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                 });
 
                 tvNumLikes.setText(Integer.toString(post.getNumLikes()));
+                if (post.isLiked()) {
+                    btnHeart.setImageResource(R.drawable.ic_heart2);
+                    btnHeart.setColorFilter(Color.argb(255,255,0,0));
+                } else {
+                    btnHeart.setImageResource(R.drawable.ic_heart);
+                    btnHeart.setColorFilter(Color.argb(255,0,0,0));
+                }
                 tvHandle.setText(post.getUser().getUsername());
                 String date = getRelativeTimeAgo(String.valueOf(post.getCreatedAt()));
                 tvCreated.setText(date);
