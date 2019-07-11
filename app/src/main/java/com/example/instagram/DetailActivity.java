@@ -26,7 +26,7 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        tvHandle = findViewById(R.id.tvHandleName);
+        //tvHandle = findViewById(R.id.tvHandleName);
         tvName = findViewById(R.id.tvUsername);
         image = findViewById(R.id.ivImage2);
         tvCaption = findViewById(R.id.tvCaption);
